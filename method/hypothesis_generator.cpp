@@ -197,7 +197,7 @@ void HypothesisGenerator::collect_valid_planes() {
     /* plane segments adjececence decision
      *
      */
-    float adjacent_threhold=6.19;//42
+    float adjacent_threhold=10*avg_max_dist_;//42
     std::cout<<adjacent_threhold<<std::endl;
     for (std::size_t i = 0; i < groups.size(); ++i) {
         VertexGroup* a = groups[i];
