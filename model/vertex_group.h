@@ -26,9 +26,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../math/principal_axes.h"
 #include "../basic/counted.h"
 #include "../basic/smart_pointer.h"
+#include "../model/map.h"
 #include <vector>
 #include <set>
-
 
 class PointSet;
 class VertexGroup : public std::vector<unsigned int>, public Counted
@@ -88,6 +88,14 @@ public:
 	bool is_highlighted() const  { return highlighted_; }
 	virtual void set_highlighted(bool b) { highlighted_ = b; }
 
+    void add_adjacent(VertexGroup* g);
+    std::set<VertexGroup*>::iterator adjacent_begin(){ return adjacents_.begin(); }
+    std::set<VertexGroup*>::iterator adjacent_end(){ return adjacents_.end(); }
+    std::size_t adjacent_size(){ return adjacents_.size(); }
+    bool find_adjacent(VertexGroup* ps);
+//    void add_face(Map::Facet* f){ supporting_faces_.push_back(f); }
+//	void remove_face(Map::Facet* f){ supporting_faces_.erase(f); }
+
 private:
 	std::string		label_;
 	PointSet*		point_set_;
@@ -99,6 +107,9 @@ private:
 
 	VertexGroup*			parent_;
 	std::set<VertexGroup*>	children_;
+
+    std::set<VertexGroup*> adjacents_;
+    //std::vector<Map::Facet*> supporting_faces_;
 
 	bool			visible_;
 	bool			highlighted_;
@@ -165,5 +176,14 @@ inline void VertexGroup::delete_children() {
 	children_.clear();
 }
 
+inline void VertexGroup::add_adjacent(VertexGroup* g) {
+    adjacents_.insert(g);
+}
+
+inline bool VertexGroup::find_adjacent(VertexGroup* ps){
+    if(adjacents_.find(ps) != adjacents_.end())
+        return true;
+    else return false;
+}
 
 #endif
