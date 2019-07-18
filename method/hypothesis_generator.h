@@ -73,6 +73,9 @@ private:
 	// pairwise cut
 	void pairwise_cut(Map* mesh);
 
+    // adjacent cut: the improved version of pairwise cut
+    void adjacent_cut(Map* mesh);
+
 private:
 	void collect_valid_planes();
 
@@ -106,6 +109,8 @@ private:
 
 	// collect all faces in 'mesh' that intersect 'face'
 	std::set<MapTypes::Facet*> collect_intersecting_faces(MapTypes::Facet* face, Map* mesh);
+    // collect all faces in 'mesh' that intersect 'face'
+    std::set<MapTypes::Facet*> collect_adjacent_faces(MapTypes::Facet* face, Map* mesh);
 
 	void triplet_intersection();
 
@@ -131,8 +136,11 @@ private:
 	// clear cached intermediate results
 	void clear();
 
+
 private:
 	PointSet* pset_;
+
+    float avg_max_dist_;
 
 	MapFacetAttribute<VertexGroup*> facet_attrib_supporting_vertex_group_;
 	MapFacetAttribute<Plane3d*>		facet_attrib_supporting_plane_;
